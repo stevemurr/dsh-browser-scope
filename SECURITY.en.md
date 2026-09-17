@@ -4,7 +4,7 @@
 
 ## Supported Versions
 
-The currently supported public release candidate is `1.0.0-rc2`.
+The currently supported public release candidate is `1.0.0-rc4`.
 
 This is a Release Candidate and does not follow a stable-release compatibility cycle. Security fixes will be prioritized for the latest release candidate or a later stable release.
 

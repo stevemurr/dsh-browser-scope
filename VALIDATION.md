@@ -10,19 +10,19 @@
 
 ```text
 package: dsh-browser-scope
-version: 1.0.0-rc2
-DSH compatibility target: 0.1.5-rc.2
-full runtime validation baseline: 0.1.5-rc.1
-RC.1 → RC.2 audit: relevant implementation and type files unchanged
+version: 1.0.0-rc4
+DSH compatibility targets: 0.1.5-rc.2, 0.1.6-alpha.1
+full browser runtime validation baseline: 0.1.5-rc.2
+0.1.6-alpha.1 validation: API audit, strict build, fresh Profile lifecycle
 Node.js: 22.x
 package manager: pnpm 11.x
 ```
 
-所有直接 `@deepseek-ai/dsh-*` Peer 均精确固定为 `0.1.5-rc.2`。
+所有直接 `@deepseek-ai/dsh-*` Peer 均声明为 `0.1.5-rc.2 || 0.1.6-alpha.1`。
 
-RC1→RC2 的 DSH 依赖迁移审计覆盖 BrowserScope 直接使用的 14 个 DSH Peer，并补充检查 `@deepseek-ai/dsh-app-boot`、`@deepseek-ai/dsh-web-app` 和 `@deepseek-ai/dsh`。相关发布包只有 `package.json` 发生版本联动，`lib` 实现、类型声明、导出入口和 Client 资源没有变化。
+DSH `0.1.6-alpha.1` 适配审计覆盖 BrowserScope 使用的 Agent、Session、Tool、Attachment、Connection、Permission Preset 和 Client UI 接口。插件已使用新的 `agent/created` 事件，未使用本次弃用的 `agent/session-start`、`snapshotEvents`、`eventAt`、`ownEvents`，也不依赖 PTC、`SandboxProvider.confine` 或 `ShellExecutor.start`。
 
-完整 Chromium 与复杂场景结果仍沿用 RC1 运行验证基线。尚未冻结的 RC2 工作线把 `session-select` 改为“首次选择后锁定”，并已完成严格 TypeScript、Host/Client 正式构建、Controller 专项、真实 DSH Agent Scope 集成以及 DSH `0.1.5-rc.2` Web 人工验收。本轮没有重复运行与 Session 锁定无关的完整 Chromium 回归；下文会分别标明历史基线与 RC2 新增验证。
+完整 Chromium 与复杂场景结果沿用 DSH `0.1.5-rc.2` 的实机验证基线。RC4 另外执行严格 TypeScript、Host/Client 正式构建、npm tarball 字节门禁，以及全新 DSH `0.1.6-alpha.1` Profile 的安装、启动和卸载生命周期验证。本报告不会把 API 审计描述为完整浏览器功能回归。
 
 本报告不自动承诺后续 DSH RC、正式版、其他操作系统或所有第三方浏览器插件兼容。
 

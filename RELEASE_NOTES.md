@@ -1,48 +1,39 @@
-# DSH BrowserScope 1.0.0-rc2 — DSH 0.1.5-rc.2 Release Candidate
+# DSH BrowserScope 1.0.0-rc4 — DSH 0.1.6-alpha.1 Compatibility Release
 
 ## 发布定位
 
-`1.0.0-rc2` 是后续候选版本。它面向公开发布展示，并提高文档的可读性。RC1 已验证的 BrowserScope 运行能力保持不变。公开文档分为产品首页、测试报告、技术细节和安全策略四个部分。npm 预发布标签和公开访问级别检查也已加入。
+`1.0.0-rc4` 是当前唯一发布候选。npm、Git Tag、GitHub Release、README、tarball、SHA-256 和候选身份文件全部绑定到这一版本。RC2 与 RC3 只作为历史版本保留，不再用于当前安装命令或发布资产。
 
-DSH RC1→RC2 兼容迁移不需要修改 BrowserScope 业务 API。已审计直接使用的 14 个 DSH Peer，以及组合启动、Web App 和宿主包的官方 npm 包差异。相关包只有 `package.json` 版本联动。发布实现、类型声明、导出入口和 Client 资源没有变化。所有直接 DSH Peer 已精确迁移到 `0.1.5-rc.2`。完整运行验证仍以 `0.1.5-rc.1` 为基线。本次兼容迁移没有重复运行无关的大型浏览器测试。
+本版本支持 DSH `0.1.5-rc.2` 和 `0.1.6-alpha.1`。所有直接 `@deepseek-ai/dsh-*` Peer 均声明为 `0.1.5-rc.2 || 0.1.6-alpha.1`。Cordis 兼容范围保持 `>=4.0.2 <5`，Schemastery 保持 `>=3.18.2 <4`。
 
-同一条尚未冻结的 RC2 工作线还加入了可靠性修复。Controller 将完整浏览器工具列表放入可滚动的二级栏。默认注册模式为 `session-select`。正式 Session 第一次使用浏览器前必须选择 BrowserScope 或其他浏览器工具，选择后在该 Session 内保持锁定；释放 BrowserScope 资源不会解除选择，需要换插件时必须新建 Session。显式全局模式发现已有浏览器工具时会安全降级，避免安装顺序导致 DSH 启动失败。代理支持系统、直连和自定义 HTTP/HTTPS/SOCKS 模式。浏览器启动参数删除了非必要开关，并继续复用共享 Persistent Profile。这些调整用于保持人工安全验证的连续性，不会绕过 Cloudflare/CAPTCHA。自适应实况改用 Host 初始化状态、串行尺寸上报和测量代际。双页支持上下和左右方向，并兼容 v1→v2 布局偏好。默认大型测试聚合脚本和不稳定的工具数量运行时自检已删除。隐私摘要、Source Map/CRX 内容身份和历史冻结候选完整性 Hash 保持不变。
+## DSH 0.1.6-alpha.1 适配
 
-## 相对 RC1 的变化
+- 审计 `agent/session-start` 改为异步串行 `agent/created` 的变更；BrowserScope 已使用 `agent/created`，无需迁移。
+- 审计已弃用的 `snapshotEvents`、`eventAt` 和 `ownEvents`；BrowserScope 未调用这些同步历史接口。
+- 审计 PTC 包名、`SandboxProvider.confine` 和 `ShellExecutor.start` 变更；BrowserScope 不依赖这些接口。
+- 开发依赖切换到 DSH `0.1.6-alpha.1`，重新执行严格 TypeScript 检查和 Host/Client 正式构建。
+- 在全新 DSH `0.1.6-alpha.1` Profile 中验证安装、启动、HTTP 认证入口和卸载生命周期。
 
-- `session-select` 改为单 Session 单浏览器选择：新正式 Session 初始为 `unselected`，选择前暂时隐藏识别到的浏览器工具；第一次选择 BrowserScope 或其他浏览器工具后，该 Session 不能再改选。
-- 释放 BrowserScope 资源只关闭本插件页面和调试状态，不注销 BrowserScope 工具，也不恢复第三方浏览器工具。需要换插件时新建 Session。
-- Controller 持久记录升级为 schema v2。旧 `dsh-browser-tools` 激活状态继续锁定 BrowserScope；旧 `other` 状态迁移为 `unselected`；损坏记录保持尚未选择。
-- DSH 重启或 Agent Scope 替换后继续恢复原选择。已经持久锁定 BrowserScope 的 Session 即使本次恢复失败，也不会降级为可改选状态。
-- Host RPC 从 `controller_deactivate` 改为 `controller_select_other`；Client 菜单改为一次性选择和资源释放，不再提供中途退出后改用其他插件的入口。
-- Controller 专项、真实 DSH Agent Scope 集成、严格 TypeScript 和正式 Host/Client 构建已经通过。真实 DSH `0.1.5-rc.2` Web 也已完成两个 Session 的首次选择、资源释放不解锁、独立锁定和重启恢复验收。
-- README 改为产品首页，采用产品推介语气，面向 DSH 用户、插件开发者和测试诊断团队。内容依次为插件简介、能力测试结果、能力展示、安装、功能介绍、兼容范围、使用反馈和 License。
-- `VALIDATION.md` 改为纯测试文档，标题为“DSH BrowserScope 测试报告”。每章按测试目的、测试内容、测试过程和测试结果组织，不包含产品主张，也不含截图。
-- 新增 `TECHNICAL.md`，集中记录配置项、工具注册模式、浏览器状态模型、安全边界、内部标识、30 工具清单和九视图说明。README 只保留指向它的链接。
-- 对比测试对象统一写为“当前较常见、使用率较高的成熟浏览器插件”。公开文档不点名，也不根据一个对照对象判断整个插件生态。
-- 公开文档不再使用“第一梯队”这类需要背书的判断，改为直接陈述已验证的能力事实。
-- npm 包白名单从 RC2 无图阶段的 9 个文件增加到 20 个文件。包中保留 `VALIDATION.md`，新增 `TECHNICAL.md`，并加入 `assets/` 下 10 张真实 DSH Web PNG。实际 tarball 检查仍要求每张图片非空，并与工作树逐字节一致。
-- `publishConfig` 明确指定官方 npm Registry 和公开访问级别。项目 `.npmrc` 固定 `rc` dist-tag。正式发布命令仍需显式传入 `--tag rc`，防止预发布版本占用 `latest`。
-- RC2 使用独立冻结入口和独立候选目录。RC1 tarball、身份、摘要和验收记录保持不可变。
+## 发布身份
 
-## 复杂应用试跑口径
+- 当前版本：`1.0.0-rc4`
+- npm dist-tag：`rc`
+- Git Tag：`v1.0.0-rc4`
+- GitHub Release：`v1.0.0-rc4` Pre-release
+- DSH 支持范围：`0.1.5-rc.2 || 0.1.6-alpha.1`
+- 发布资产：`.tgz`、SHA-256 文件、`candidate-identity.json`
 
-- BrowserScope 插件能力：`PASS`。30 工具、真实浏览器、调试、证据采集和资源清理预检通过。
-- Agent 提交的应用补丁：`PARTIAL PASS`。公开测试与构建通过。私有关系矩阵为 `4/5`，缺少一个身份变化与低顺序回退组合。
-- 外部正式验收设施：`FAIL`。正式访问前，服务端口已经无法连接。完整进程退出证据缺失。
-- 综合分类：`QUALIFIED_PARTIAL_PASS`。该结论只支持 BrowserScope 插件能力。应用修复、模型表现和测试设施没有全部通过。
-
-## 发布状态
-
-`1.0.0-rc2` 当前已完成单 Session 浏览器锁定实现、正式构建、Controller 专项、真实 Agent Scope 集成、DSH `0.1.5-rc.2` Web 人工验收和三张 Controller 截图更新。两个实机 Session 的持久记录分别为 BrowserScope 与其他浏览器工具，schema v2、`generation=1`，重启后均正确恢复。20 文件发布结构保持不变，README 已恢复引用新截图。
-
-不可变候选尚未形成。公开副本已通过白名单 Staging 同步，Git 元数据保持不变，敏感内容检查为 0；最终 npm 20 文件 tarball 门禁已通过，临时归档已自动删除。当前只等待用户决定是否授权冻结 RC2。
-
-自动化卫生检查脚本已按用户要求删除，文档格式改由人工核对。npm 包白名单检查、公开导出器和 RC2 冻结器保留。
-
-Git 提交、远端推送、仓库公开化、Git Tag、GitHub Release 和 npm 发布均未执行。后续不能覆盖 `1.0.0-rc1`，也不能在同一 RC2 版本下生成多份内容不同的冻结制品。
+候选状态只由冻结 tarball、SHA-256 和候选身份文件证明。发布时必须直接使用冻结 tarball，禁止从 Tag 或工作区重新打包。
 
 ---
+
+# 历史：DSH BrowserScope 1.0.0-rc3
+
+RC3 首次声明兼容 DSH `0.1.6-alpha.1`，但没有形成独立冻结 tarball，也没有发布到 npm。该版本保留为 GitHub 历史 Pre-release，不作为当前安装或制品身份。
+
+# 历史：DSH BrowserScope 1.0.0-rc2
+
+RC2 是 DSH `0.1.5-rc.2` 的已冻结候选，Git Tag、GitHub Release 和冻结 tarball继续保留。当前安装命令已全部迁移到 RC4。
 
 # 历史：DSH BrowserScope 1.0.0-rc1 — DSH 0.1.5-rc.1 Release Candidate
 

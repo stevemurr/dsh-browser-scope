@@ -7,7 +7,7 @@
 不只看页面。能点击、能断点、能抓请求、能读 Source Map，还能把现场证据留下。
 
 ![License](https://img.shields.io/badge/license-MIT-2563EB?style=for-the-badge)
-![DSH](https://img.shields.io/badge/DSH-0.1.5--rc.2-7C3AED?style=for-the-badge)
+![DSH](https://img.shields.io/badge/DSH-0.1.5--rc.2%20%7C%200.1.6--alpha.1-7C3AED?style=for-the-badge)
 ![Node](https://img.shields.io/badge/Node-%5E22.19.0%20%7C%7C%20%3E%3D24.0.0-16A34A?style=for-the-badge&logo=nodedotjs&logoColor=white)
 ![Status](https://img.shields.io/badge/status-Release%20Candidate-F97316?style=for-the-badge)
 
@@ -151,13 +151,13 @@ CPU 飙高？内存泄漏？用 Trace 看主线程阻塞，用 CPU Profile 找�
 安装插件：
 
 ```powershell
-dsh plugin --profile web add dsh-browser-scope@1.0.0-rc2 --ignore-scripts --config.auto-install-peers=false
+dsh plugin --profile web add dsh-browser-scope@1.0.0-rc4 --ignore-scripts --config.auto-install-peers=false
 ```
 
 或使用本地 tarball：
 
 ```powershell
-dsh plugin --profile web add ./dsh-browser-scope-1.0.0-rc2.tgz --ignore-scripts --config.auto-install-peers=false
+dsh plugin --profile web add ./dsh-browser-scope-1.0.0-rc4.tgz --ignore-scripts --config.auto-install-peers=false
 ```
 
 在 Profile 的 `cordis.patch.yml` 中启用：
@@ -295,7 +295,7 @@ dsh plugin --profile web add ./dsh-browser-scope-1.0.0-rc2.tgz --ignore-scripts 
 
 ## 兼容范围
 
-当前版本 `1.0.0-rc3` 适配 DSH `0.1.5-rc.2` 和 `0.1.6-alpha.1`，要求 Cordis `>=4.0.2 <5`、Schemastery `>=3.18.2 <4`。
+当前版本 `1.0.0-rc4` 适配 DSH `0.1.5-rc.2` 和 `0.1.6-alpha.1`，要求 Cordis `>=4.0.2 <5`、Schemastery `>=3.18.2 <4`。
 
 候选状态以外部 candidate-identity.json 和 tarball 摘要为准。
 
