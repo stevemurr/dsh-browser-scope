@@ -10,19 +10,19 @@ Release candidate states are formally anchored by external candidate identity de
 
 ```text
 package: dsh-browser-scope
-version: 1.0.0-rc4
-DSH compatibility targets: 0.1.5-rc.2, 0.1.6-alpha.1
+version: 1.0.0-rc5
+DSH compatibility targets: 0.1.5-rc.2, 0.1.6-alpha.1, 0.1.6-alpha.2
 full browser runtime validation baseline: 0.1.5-rc.2
-0.1.6-alpha.1 validation: API audit, strict build, fresh Profile lifecycle
+0.1.6-alpha.2 validation: API audit, strict build, fresh Profile lifecycle
 Node.js: 22.x
 package manager: pnpm 11.x
 ```
 
-All direct `@deepseek-ai/dsh-*` peer dependencies declare `0.1.5-rc.2 || 0.1.6-alpha.1`.
+All direct `@deepseek-ai/dsh-*` peer dependencies declare `0.1.5-rc.2 || 0.1.6-alpha.1 || 0.1.6-alpha.2`.
 
-The DSH `0.1.6-alpha.1` audit covers the Agent, Session, Tool, Attachment, Connection, Permission Preset, and Client UI interfaces used by BrowserScope. The plugin already uses `agent/created`; it does not use the deprecated `agent/session-start`, `snapshotEvents`, `eventAt`, or `ownEvents` APIs, and it does not depend on PTC, `SandboxProvider.confine`, or `ShellExecutor.start`.
+The DSH `0.1.6-alpha.2` audit covers the Agent, Session, Tool, Attachment, Connection, Permission Preset, Client Session, right-sidebar, and Slot interfaces used by BrowserScope. Alpha 2 retains `agent/created`, `agent/disposed`, `useSession`, `sidebarRight.openTab/close/active`, and `sidebar.right.pane.tab`. Its new multi-instance Session reference state, right-sidebar Tab Inventory, and runtime plugin unloading do not require BrowserScope business-logic changes. Host Runtime, RPC, tools, event listeners, and Client Tab/Slot registrations already follow Cordis Effect lifecycles.
 
-Comprehensive Chromium and complex-scenario results remain anchored to the live DSH `0.1.5-rc.2` baseline. RC4 additionally performs strict TypeScript checks, production Host/Client builds, npm tarball byte verification, and a fresh DSH `0.1.6-alpha.1` Profile install/start/remove lifecycle. This report does not present an API audit as a complete browser regression run.
+Comprehensive Chromium and complex-scenario results remain anchored to the live DSH `0.1.5-rc.2` baseline. RC5 additionally performs strict TypeScript checks, production Host/Client builds, npm tarball byte verification, and a fresh DSH `0.1.6-alpha.2` Profile install/start/remove lifecycle. This report does not present an API audit as a complete browser regression run.
 
 ## 1. 30 Browser Tools Integration
 

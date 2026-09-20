@@ -7,7 +7,7 @@ import { gunzipSync } from 'node:zlib'
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const packageName = 'dsh-browser-scope'
-const expectedVersion = '1.0.0-rc4'
+const expectedVersion = '1.0.0-rc5'
 const expectedFiles = [
   'LICENSE',
   'README.en.md',

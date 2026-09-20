@@ -1,31 +1,35 @@
-# DSH BrowserScope 1.0.0-rc4 — DSH 0.1.6-alpha.1 Compatibility Release
+# DSH BrowserScope 1.0.0-rc5 — DSH 0.1.6-alpha.2 Compatibility Release
 
 ## 发布定位
 
-`1.0.0-rc4` 是当前唯一发布候选。npm、Git Tag、GitHub Release、README、tarball、SHA-256 和候选身份文件全部绑定到这一版本。RC2 与 RC3 只作为历史版本保留，不再用于当前安装命令或发布资产。
+`1.0.0-rc5` 是当前唯一发布候选。npm、Git Tag、GitHub Release、README、tarball、SHA-256 和候选身份文件全部绑定到这一版本。RC4 及更早版本只作为历史版本保留，不再用于当前安装命令或发布资产。
 
-本版本支持 DSH `0.1.5-rc.2` 和 `0.1.6-alpha.1`。所有直接 `@deepseek-ai/dsh-*` Peer 均声明为 `0.1.5-rc.2 || 0.1.6-alpha.1`。Cordis 兼容范围保持 `>=4.0.2 <5`，Schemastery 保持 `>=3.18.2 <4`。
+本版本支持 DSH `0.1.5-rc.2`、`0.1.6-alpha.1` 和 `0.1.6-alpha.2`。所有直接 `@deepseek-ai/dsh-*` Peer 均声明为 `0.1.5-rc.2 || 0.1.6-alpha.1 || 0.1.6-alpha.2`。Cordis 兼容范围保持 `>=4.0.2 <5`，Schemastery 保持 `>=3.18.2 <4`。
 
-## DSH 0.1.6-alpha.1 适配
+## DSH 0.1.6-alpha.2 适配
 
-- 审计 `agent/session-start` 改为异步串行 `agent/created` 的变更；BrowserScope 已使用 `agent/created`，无需迁移。
-- 审计已弃用的 `snapshotEvents`、`eventAt` 和 `ownEvents`；BrowserScope 未调用这些同步历史接口。
-- 审计 PTC 包名、`SandboxProvider.confine` 和 `ShellExecutor.start` 变更；BrowserScope 不依赖这些接口。
-- 开发依赖切换到 DSH `0.1.6-alpha.1`，重新执行严格 TypeScript 检查和 Host/Client 正式构建。
-- 在全新 DSH `0.1.6-alpha.1` Profile 中验证安装、启动、HTTP 认证入口和卸载生命周期。
+- 审计 Plugin Manager 的运行时依赖解析与插件卸载；BrowserScope 的 Runtime、RPC、工具、事件和 Client 注册均已由 Cordis Effect 生命周期管理，无需增加兼容补丁。
+- 审计 Client Session 多实例、Session Reference、`useSessionStatus` 和 `useSessionRetainInfo`；BrowserScope 继续按 `sessionId` 隔离面板、控制器和浏览器状态，不依赖单一 Client Session 假设。
+- 审计右侧栏持久 Tab Inventory、`openTabs`、`tabsIn()`、`forget()` 和 `preferNewPane`；现有 `openTab/close/active`、Tab 注册及 Session Slot 契约保持兼容。
+- 开发依赖切换到 DSH `0.1.6-alpha.2`，重新执行严格 TypeScript 检查和 Host/Client 正式构建。
+- 在全新 DSH `0.1.6-alpha.2` Profile 中验证安装、启动、HTTP 认证入口和卸载生命周期。
 
 ## 发布身份
 
-- 当前版本：`1.0.0-rc4`
+- 当前版本：`1.0.0-rc5`
 - npm dist-tag：`rc`
-- Git Tag：`v1.0.0-rc4`
-- GitHub Release：`v1.0.0-rc4` Pre-release
-- DSH 支持范围：`0.1.5-rc.2 || 0.1.6-alpha.1`
+- Git Tag：`v1.0.0-rc5`
+- GitHub Release：`v1.0.0-rc5` Pre-release
+- DSH 支持范围：`0.1.5-rc.2 || 0.1.6-alpha.1 || 0.1.6-alpha.2`
 - 发布资产：`.tgz`、SHA-256 文件、`candidate-identity.json`
 
 候选状态只由冻结 tarball、SHA-256 和候选身份文件证明。发布时必须直接使用冻结 tarball，禁止从 Tag 或工作区重新打包。
 
 ---
+
+# 历史：DSH BrowserScope 1.0.0-rc4
+
+RC4 是首个发布到 npm 的 BrowserScope 候选，适配 DSH `0.1.5-rc.2` 和 `0.1.6-alpha.1`。其 npm 版本、Tag、GitHub Pre-release、tarball 和候选身份保持不可变。
 
 # 历史：DSH BrowserScope 1.0.0-rc3
 

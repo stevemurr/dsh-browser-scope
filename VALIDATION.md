@@ -10,19 +10,19 @@
 
 ```text
 package: dsh-browser-scope
-version: 1.0.0-rc4
-DSH compatibility targets: 0.1.5-rc.2, 0.1.6-alpha.1
+version: 1.0.0-rc5
+DSH compatibility targets: 0.1.5-rc.2, 0.1.6-alpha.1, 0.1.6-alpha.2
 full browser runtime validation baseline: 0.1.5-rc.2
-0.1.6-alpha.1 validation: API audit, strict build, fresh Profile lifecycle
+0.1.6-alpha.2 validation: API audit, strict build, fresh Profile lifecycle
 Node.js: 22.x
 package manager: pnpm 11.x
 ```
 
-所有直接 `@deepseek-ai/dsh-*` Peer 均声明为 `0.1.5-rc.2 || 0.1.6-alpha.1`。
+所有直接 `@deepseek-ai/dsh-*` Peer 均声明为 `0.1.5-rc.2 || 0.1.6-alpha.1 || 0.1.6-alpha.2`。
 
-DSH `0.1.6-alpha.1` 适配审计覆盖 BrowserScope 使用的 Agent、Session、Tool、Attachment、Connection、Permission Preset 和 Client UI 接口。插件已使用新的 `agent/created` 事件，未使用本次弃用的 `agent/session-start`、`snapshotEvents`、`eventAt`、`ownEvents`，也不依赖 PTC、`SandboxProvider.confine` 或 `ShellExecutor.start`。
+DSH `0.1.6-alpha.2` 适配审计覆盖 BrowserScope 使用的 Agent、Session、Tool、Attachment、Connection、Permission Preset、Client Session、右侧栏和 Slot 接口。Alpha 2 保留 `agent/created`、`agent/disposed`、`useSession`、`sidebarRight.openTab/close/active` 和 `sidebar.right.pane.tab`；新增的 Session 多实例引用状态、右侧栏 Tab Inventory 与运行时插件卸载不要求修改 BrowserScope 业务源码。Host Runtime、RPC、工具、事件监听以及 Client Tab/Slot 注册均已通过 Cordis Effect 生命周期管理。
 
-完整 Chromium 与复杂场景结果沿用 DSH `0.1.5-rc.2` 的实机验证基线。RC4 另外执行严格 TypeScript、Host/Client 正式构建、npm tarball 字节门禁，以及全新 DSH `0.1.6-alpha.1` Profile 的安装、启动和卸载生命周期验证。本报告不会把 API 审计描述为完整浏览器功能回归。
+完整 Chromium 与复杂场景结果沿用 DSH `0.1.5-rc.2` 的实机验证基线。RC5 另外执行严格 TypeScript、Host/Client 正式构建、npm tarball 字节门禁，以及全新 DSH `0.1.6-alpha.2` Profile 的安装、启动和卸载生命周期验证。本报告不会把 API 审计描述为完整浏览器功能回归。
 
 本报告不自动承诺后续 DSH RC、正式版、其他操作系统或所有第三方浏览器插件兼容。
 

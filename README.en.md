@@ -7,7 +7,7 @@
 More than just viewing pages. Click, step through breakpoints, inspect network requests, resolve Source Maps, and capture undeniable diagnostics evidence.
 
 ![License](https://img.shields.io/badge/license-MIT-2563EB?style=for-the-badge)
-![DSH](https://img.shields.io/badge/DSH-0.1.5--rc.2%20%7C%200.1.6--alpha.1-7C3AED?style=for-the-badge)
+![DSH](https://img.shields.io/badge/DSH-0.1.5--rc.2%20%7C%200.1.6--alpha.1%20%7C%200.1.6--alpha.2-7C3AED?style=for-the-badge)
 ![Node](https://img.shields.io/badge/Node-%5E22.19.0%20%7C%7C%20%3E%3D24.0.0-16A34A?style=for-the-badge&logo=nodedotjs&logoColor=white)
 ![Status](https://img.shields.io/badge/status-Release%20Candidate-F97316?style=for-the-badge)
 
@@ -29,7 +29,7 @@ What is the biggest pain point in frontend debugging? Invisible DOM trees, misse
 
 BrowserScope fundamentally changes this dynamic. It embeds a comprehensive Chromium workbench into the right sidebar of DSH Web, powered by 30 purpose-built automation tools. Agents can now directly inspect DOM nodes, interact with elements, review console logs, trace network requests, set breakpoints, read execution call stacks, resolve Source Maps, profile runtime performance, and preserve intact diagnostic evidence before and after interactions. From elementary clicks and scrolls to deep breakpoint inspection and bottleneck diagnosis, everything is handled natively within a single Session.
 
-Furthermore, BrowserScope ensures safe multi-plugin coexistence, tailored for DSH `0.1.5-rc.2`. Each formal Session selects its browser toolset upon first use (BrowserScope or existing third-party browser tools in the current profile). Once chosen, that Session remains permanently locked to that toolset, while other Sessions can choose independently. This prevents contaminated cross-plugin states, detached tabs, and conflicted authentication sessions.
+Furthermore, BrowserScope ensures safe multi-plugin coexistence across DSH `0.1.5-rc.2`, `0.1.6-alpha.1`, and `0.1.6-alpha.2`. Each formal Session selects its browser toolset upon first use (BrowserScope or existing third-party browser tools in the current profile). Once chosen, that Session remains permanently locked to that toolset, while other Sessions can choose independently. This prevents contaminated cross-plugin states, detached tabs, and conflicted authentication sessions.
 
 ![BrowserScope Live Workbench inside DSH Web](./assets/browser-scope-hero.png)
 
@@ -143,13 +143,13 @@ Requires Node.js `^22.19.0` or `>=24.0.0`, and a functional DSH Web Profile.
 Install the plugin:
 
 ```powershell
-dsh plugin --profile web add dsh-browser-scope@1.0.0-rc4 --ignore-scripts --config.auto-install-peers=false
+dsh plugin --profile web add dsh-browser-scope@1.0.0-rc5 --ignore-scripts --config.auto-install-peers=false
 ```
 
 Or install via local tarball:
 
 ```powershell
-dsh plugin --profile web add ./dsh-browser-scope-1.0.0-rc4.tgz --ignore-scripts --config.auto-install-peers=false
+dsh plugin --profile web add ./dsh-browser-scope-1.0.0-rc5.tgz --ignore-scripts --config.auto-install-peers=false
 ```
 
 Enable in your profile's `cordis.patch.yml`:
@@ -263,7 +263,7 @@ For comprehensive multi-environment empirical test results, see [VALIDATION.en.m
 
 ## Compatibility
 
-Current release `1.0.0-rc4` targets DSH `0.1.5-rc.2` and `0.1.6-alpha.1`, with requirements for Cordis `>=4.0.2 <5` and Schemastery `>=3.18.2 <4`.
+Current release `1.0.0-rc5` targets DSH `0.1.5-rc.2`, `0.1.6-alpha.1`, and `0.1.6-alpha.2`, with requirements for Cordis `>=4.0.2 <5` and Schemastery `>=3.18.2 <4`.
 
 Candidate identity is anchored by external `candidate-identity.json` and tarball digest.
 
