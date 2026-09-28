@@ -179,9 +179,10 @@ try {
   assert(indexSource.includes('text: JSON.stringify(value)') && !indexSource.includes('Browser ${value.action}:'), 'compact tool render is missing')
   assert(
     clientSource.includes('const loadingController = controllerState === undefined')
-      && clientSource.includes('控制器状态读取中')
+      && clientSource.includes("? '浏览器选择读取中'")
       && clientSource.includes('完整浏览器面板不会在此期间启动')
-      && clientSource.includes('!loadingController && !active && !confirmActivate'),
+      && clientSource.includes('loadingController && <span')
+      && clientSource.includes('{unselected && !confirmActivate && !confirmOther && <>'),
     'controller loading state can still be misreported as other or expose activation actions early',
   )
   // DSH 的空白 Hero Session 会在首条消息后切换为正式 Session；RC.1 的右侧栏状态按 Session 保存，
@@ -329,6 +330,7 @@ try {
     '    - id: browser-tools',
     `      name: ${JSON.stringify(isolatedPackageEntry)}`,
     '      config:',
+    "        toolRegistrationMode: 'global'",
     '        allowLoopback: true',
     `        allowedOrigins: [${JSON.stringify(origin)}]`,
     `        artifactRoot: ${JSON.stringify(artifactRoot)}`,
@@ -559,7 +561,7 @@ try {
     await new Promise(resolveWait => setTimeout(resolveWait, 50))
   }
   const splitPreference = JSON.parse(readFileSync(join(artifactRoot, 'layout', 'sessions', profileSegment('panel-first'), 'split-view.json'), 'utf8'))
-  assert(splitPreference.version === 1 && splitPreference.ratio === 0.6, 'split ratio was not persisted for the DSH Session')
+  assert(splitPreference.version === 2 && splitPreference.ratio === 0.6 && splitPreference.orientation === 'top-bottom', 'split ratio and orientation were not persisted for the DSH Session')
   assert(splitBottomResize.ok === true, 'split pane resize rejected an operable height below the single-page minimum')
   assert(splitAfterCompactResize?.splitView?.panes?.find(item => item.pane === 'bottom')?.liveView.height === 200, 'compact split pane did not use its real viewport height')
   splitLive = splitAfterCompactResize
@@ -1164,6 +1166,7 @@ try {
   const panelForward = await rpc('tabs', { sessionId: 'a', action: 'forward', viewId: panelNewId })
   assert([panelNavigate, panelReload, panelBack, panelForward].every(item => item.ok === true), 'browser panel navigation lifecycle failed')
   const unregisterAgent = ctx.agents.register(a)
+  await unregisterAgent
   const injectedBeforeSelect = a.injected.length
   const panelSelectFirst = await rpc('tabs', { sessionId: 'a', action: 'select', viewId: 'v1', notifyAgent: true })
   const injectedAfterSelect = a.injected.length
@@ -2046,9 +2049,10 @@ try {
   assert(extensionPopupOpen.ok === true && popupExtensionsSnapshot.extensionPopup?.viewId === extensionPopupOpen.data.popupViewId && popupLiveSnapshot.extensionPopup?.viewId === extensionPopupOpen.data.popupViewId, 'extension popup did not remain available across panel views')
   await rpcWithin('extension popup close', 5000, 'extensions', { sessionId: 'a', action: 'close_popup', extensionId: seededExtensionA })
   const unregisterC = ctx.agents.register(c)
-  unregisterC()
+  await unregisterC
+  await unregisterC()
   let disposedSessionSnapshot
-  for (let attempt = 0; attempt < 40; attempt += 1) {
+  for (let attempt = 0; attempt < 400; attempt += 1) {
     disposedSessionSnapshot = await rpc('snapshot', { sessionId: 'c', view: 'console' })
     if (disposedSessionSnapshot.available === false) break
     await new Promise(resolveWait => setTimeout(resolveWait, 25))
@@ -2059,7 +2063,7 @@ try {
     && aAfterCDisposeNav.isError === false
     && aAfterCDisposeState.isError === false
     && aAfterCDisposeState.value.data.value === 'preserved',
-  'disposing session C closed the shared context or damaged session A shared website state')
+  `disposing session C closed the shared context or damaged session A shared website state: ${JSON.stringify({ disposedSessionSnapshot, aAfterCDisposeNav, aAfterCDisposeState })}`)
   const tabsBeforeEmpty = await rpc('snapshot', { sessionId: 'a', view: 'console' })
   for (const tab of tabsBeforeEmpty.tabs) await rpc('tabs', { sessionId: 'a', action: 'close', viewId: tab.viewId })
   const emptyPanel = await rpc('snapshot', { sessionId: 'a', view: 'live' })

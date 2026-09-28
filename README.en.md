@@ -29,7 +29,7 @@ What is the biggest pain point in frontend debugging? Invisible DOM trees, misse
 
 BrowserScope fundamentally changes this dynamic. It embeds a comprehensive Chromium workbench into the right sidebar of DSH Web, powered by 30 purpose-built automation tools. Agents can now directly inspect DOM nodes, interact with elements, review console logs, trace network requests, set breakpoints, read execution call stacks, resolve Source Maps, profile runtime performance, and preserve intact diagnostic evidence before and after interactions. From elementary clicks and scrolls to deep breakpoint inspection and bottleneck diagnosis, everything is handled natively within a single Session.
 
-Furthermore, BrowserScope ensures safe multi-plugin coexistence across DSH `0.1.5-rc.2`, `0.1.6-alpha.1`, and `0.1.6-alpha.2`. Each formal Session selects its browser toolset upon first use (BrowserScope or existing third-party browser tools in the current profile). Once chosen, that Session remains permanently locked to that toolset, while other Sessions can choose independently. This prevents contaminated cross-plugin states, detached tabs, and conflicted authentication sessions.
+Furthermore, BrowserScope ensures safe multi-plugin coexistence across DSH `0.1.5-rc.2`, `0.1.6-alpha.1`, `0.1.6-alpha.2`, and `0.1.7-rc.1`. Each formal Session selects its browser toolset upon first use (BrowserScope or existing third-party browser tools in the current profile). Once chosen, that Session remains permanently locked to that toolset, while other Sessions can choose independently. This prevents contaminated cross-plugin states, detached tabs, and conflicted authentication sessions.
 
 ![BrowserScope Live Workbench inside DSH Web](./assets/browser-scope-hero.png)
 
@@ -140,16 +140,16 @@ Investigate CPU spikes, main-thread blocking, and memory leaks. Export traces, c
 
 Requires Node.js `^22.19.0` or `>=24.0.0`, and a functional DSH Web Profile.
 
-Install the plugin:
+`1.0.0-rc7` targets DSH `0.1.7-rc.1` and `0.1.7-rc.2` using the same browser business source as the validated RC6. Before installing, verify that the exact version has been published on the npm Registry; otherwise use a local tarball checked against its candidate identity file and SHA-256. Freezing and public release are separate steps and cannot be inferred from the package version alone.
 
 ```powershell
-dsh plugin --profile web add dsh-browser-scope@1.0.0-rc5 --ignore-scripts --config.auto-install-peers=false
+dsh plugin --profile web add dsh-browser-scope@1.0.0-rc7 --ignore-scripts --config.auto-install-peers=false
 ```
 
 Or install via local tarball:
 
 ```powershell
-dsh plugin --profile web add ./dsh-browser-scope-1.0.0-rc5.tgz --ignore-scripts --config.auto-install-peers=false
+dsh plugin --profile web add ./dsh-browser-scope-1.0.0-rc7.tgz --ignore-scripts --config.auto-install-peers=false
 ```
 
 Enable in your profile's `cordis.patch.yml`:
@@ -263,7 +263,7 @@ For comprehensive multi-environment empirical test results, see [VALIDATION.en.m
 
 ## Compatibility
 
-Current release `1.0.0-rc5` targets DSH `0.1.5-rc.2`, `0.1.6-alpha.1`, and `0.1.6-alpha.2`, with requirements for Cordis `>=4.0.2 <5` and Schemastery `>=3.18.2 <4`.
+The target DSH range for `1.0.0-rc7` is `0.1.5-rc.2`, `0.1.6-alpha.1`, `0.1.6-alpha.2`, `0.1.7-rc.1`, and `0.1.7-rc.2`, with Cordis `>=4.0.2 <5` and Schemastery `>=3.18.2 <4`. RC7 retains RC6's browser business code; check the Registry for the exact npm version before using the install command, and verify candidate freezing and GitHub publication separately.
 
 Candidate identity is anchored by external `candidate-identity.json` and tarball digest.
 

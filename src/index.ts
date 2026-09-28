@@ -2,7 +2,7 @@ import type { Context } from '@deepseek-ai/cordis'
 import type { HostConnectionHandle } from '@deepseek-ai/dsh-client-connection'
 import z from '@deepseek-ai/schemastery'
 import { defineTool } from '@deepseek-ai/dsh-tools'
-import { createUserMessage } from '@deepseek-ai/dsh-llm'
+import { createBrowserNotice } from './dsh-message.ts'
 import { SessionId } from '@deepseek-ai/dsh-session'
 import type { ParameterSchemaSpec, ToolDefinition, ToolRunContext, ValueSchemaSpec } from '@deepseek-ai/dsh-tools'
 import type {} from '@deepseek-ai/dsh-agent'
@@ -251,10 +251,10 @@ export function apply(ctx: Context, config: BrowserConfig): void {
             const title = typeof result.data.title === 'string' && result.data.title !== '' ? result.data.title : '无标题页'
             const url = typeof result.data.url === 'string' ? result.data.url : 'about:blank'
             try {
-              agent.inject(createUserMessage({
-                content: [{ type: 'text', text: `用户已在右侧浏览器中切换活动标签。当前活动标签 viewId=${result.viewId}，标题为“${title}”，URL 为 ${url}。后续浏览器观察和操作请以该标签为准，并在需要精确定位元素时重新获取快照。` }],
-                source: { kind: 'plugin', plugin: name, form: 'notice', summary: `用户切换浏览器标签：${title}` },
-              }))
+              agent.inject(createBrowserNotice(
+                `用户已在右侧浏览器中切换活动标签。当前活动标签 viewId=${result.viewId}，标题为“${title}”，URL 为 ${url}。后续浏览器观察和操作请以该标签为准，并在需要精确定位元素时重新获取快照。`,
+                `用户切换浏览器标签：${title}`,
+              ))
             } catch {}
           }
           return rpcSuccess(result)
@@ -304,10 +304,10 @@ export function apply(ctx: Context, config: BrowserConfig): void {
           if (agent !== undefined && ctx.agents.get(SessionId(sessionId)) === agent && result.ok && isRecord(result.data) && result.data.changed === true && (payload.action === 'standard' || payload.action === 'adaptive')) {
             const mode = payload.action === 'standard' ? '标准比例' : '自适应比例'
             try {
-              agent.inject(createUserMessage({
-                content: [{ type: 'text', text: `用户已将右侧浏览器实况切换为${mode}模式。标准模式固定为 1280×720 并优先保证页面元素完整；自适应模式会让真实浏览器 Viewport 跟随右侧区域，以减少黑边并方便人工观察与操作。请基于当前模式继续工作。` }],
-                source: { kind: 'plugin', plugin: name, form: 'notice', summary: `用户将浏览器实况切换为${mode}模式` },
-              }))
+              agent.inject(createBrowserNotice(
+                `用户已将右侧浏览器实况切换为${mode}模式。标准模式固定为 1280×720 并优先保证页面元素完整；自适应模式会让真实浏览器 Viewport 跟随右侧区域，以减少黑边并方便人工观察与操作。请基于当前模式继续工作。`,
+                `用户将浏览器实况切换为${mode}模式`,
+              ))
             } catch {}
           }
           return rpcSuccess(result)
@@ -319,10 +319,10 @@ export function apply(ctx: Context, config: BrowserConfig): void {
           if (agent !== undefined && ctx.agents.get(SessionId(sessionId)) === agent && result.ok && isRecord(result.data) && result.data.changed === true) {
             try {
               const orientationLabel = result.data.orientation === 'left-right' ? '左右' : '上下'
-              agent.inject(createUserMessage({
-                content: [{ type: 'text', text: `用户已调整右侧浏览器${orientationLabel}双页分屏。当前状态：${result.data.enabled === true ? `已开启，第一窗格占比 ${Math.round(Number(result.data.ratio) * 100)}%` : '已关闭'}；当前焦点标签 viewId=${result.viewId ?? 'none'}。后续未显式提供 viewId 的浏览器工具将操作当前焦点标签。` }],
-                source: { kind: 'plugin', plugin: name, form: 'notice', summary: `用户调整浏览器${orientationLabel}分屏` },
-              }))
+              agent.inject(createBrowserNotice(
+                `用户已调整右侧浏览器${orientationLabel}双页分屏。当前状态：${result.data.enabled === true ? `已开启，第一窗格占比 ${Math.round(Number(result.data.ratio) * 100)}%` : '已关闭'}；当前焦点标签 viewId=${result.viewId ?? 'none'}。后续未显式提供 viewId 的浏览器工具将操作当前焦点标签。`,
+                `用户调整浏览器${orientationLabel}分屏`,
+              ))
             } catch {}
           }
           return rpcSuccess(result)
@@ -699,10 +699,10 @@ export function apply(ctx: Context, config: BrowserConfig): void {
       if (result.ok && isRecord(result.data) && result.data.changed === true && exec.agent !== undefined) {
         try {
           const orientationLabel = result.data.orientation === 'left-right' ? '左右' : '上下'
-          exec.agent.inject(createUserMessage({
-            content: [{ type: 'text', text: `Agent 已调整右侧浏览器${orientationLabel}双页分屏：${result.data.enabled === true ? `已开启，第一窗格占比 ${Math.round(Number(result.data.ratio) * 100)}%` : '已关闭'}；当前焦点标签 viewId=${result.viewId ?? 'none'}。` }],
-            source: { kind: 'plugin', plugin: name, form: 'notice', summary: `Agent 调整浏览器${orientationLabel}分屏` },
-          }))
+          exec.agent.inject(createBrowserNotice(
+            `Agent 已调整右侧浏览器${orientationLabel}双页分屏：${result.data.enabled === true ? `已开启，第一窗格占比 ${Math.round(Number(result.data.ratio) * 100)}%` : '已关闭'}；当前焦点标签 viewId=${result.viewId ?? 'none'}。`,
+            `Agent 调整浏览器${orientationLabel}分屏`,
+          ))
         } catch {}
       }
       return result

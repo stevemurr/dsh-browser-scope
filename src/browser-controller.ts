@@ -3,7 +3,7 @@ import { mkdir, readFile, rename, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import type { Context } from '@deepseek-ai/cordis'
 import type { Agent } from '@deepseek-ai/dsh-agent'
-import { createUserMessage } from '@deepseek-ai/dsh-llm'
+import { createBrowserNotice } from './dsh-message.ts'
 import type { ToolDefinition } from '@deepseek-ai/dsh-tools'
 
 export type BrowserControllerMode = 'unselected' | 'other' | 'dsh-browser-tools'
@@ -233,15 +233,10 @@ export class BrowserControllerStore {
 
   private async notify(agent: Agent, mode: BrowserControllerMode): Promise<void> {
     try {
-      agent.inject(createUserMessage({
-        content: [{ type: 'text', text: controllerNotice(mode) }],
-        source: {
-          kind: 'plugin',
-          plugin: 'dsh-browser-scope',
-          form: 'notice',
-          summary: mode === 'dsh-browser-tools' ? '已选择 DSH BrowserScope' : mode === 'other' ? '已选择其他浏览器工具' : '尚未选择浏览器工具',
-        },
-      }))
+      agent.inject(createBrowserNotice(
+        controllerNotice(mode),
+        mode === 'dsh-browser-tools' ? '已选择 DSH BrowserScope' : mode === 'other' ? '已选择其他浏览器工具' : '尚未选择浏览器工具',
+      ))
     } catch {}
   }
 
@@ -526,10 +521,10 @@ export class BrowserControllerStore {
           state.status = 'active'
           state.activatedAt = undefined
           try {
-            agent.inject(createUserMessage({
-              content: [{ type: 'text', text: '当前 Session 的 BrowserScope 浏览器资源已释放。浏览器工具选择仍保持锁定；后续再次调用 BrowserScope 工具时会创建新的 BrowserScope 页面。需要使用其他浏览器插件时，请新建 Session。' }],
-              source: { kind: 'plugin', plugin: 'dsh-browser-scope', form: 'notice', summary: '已释放 BrowserScope 浏览器资源' },
-            }))
+            agent.inject(createBrowserNotice(
+              '当前 Session 的 BrowserScope 浏览器资源已释放。浏览器工具选择仍保持锁定；后续再次调用 BrowserScope 工具时会创建新的 BrowserScope 页面。需要使用其他浏览器插件时，请新建 Session。',
+              '已释放 BrowserScope 浏览器资源',
+            ))
           } catch {}
         } catch (error) {
           if (state.agent === agent && state.bindingGeneration === bindingGeneration) {

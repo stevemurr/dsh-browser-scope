@@ -10,19 +10,19 @@ Release candidate states are formally anchored by external candidate identity de
 
 ```text
 package: dsh-browser-scope
-version: 1.0.0-rc5
-DSH compatibility targets: 0.1.5-rc.2, 0.1.6-alpha.1, 0.1.6-alpha.2
-full browser runtime validation baseline: 0.1.5-rc.2
-0.1.6-alpha.2 validation: API audit, strict build, fresh Profile lifecycle
+version: 1.0.0-rc7
+DSH compatibility targets: 0.1.5-rc.2, 0.1.6-alpha.1, 0.1.6-alpha.2, 0.1.7-rc.1, 0.1.7-rc.2
+full browser runtime validation: 0.1.7-rc.1, 0.1.7-rc.2
+0.1.7-rc.2 validation: API/type audit, strict build, 30-tool Chromium regression, fresh Profile lifecycle
 Node.js: 22.x
 package manager: pnpm 11.x
 ```
 
-All direct `@deepseek-ai/dsh-*` peer dependencies declare `0.1.5-rc.2 || 0.1.6-alpha.1 || 0.1.6-alpha.2`.
+All direct `@deepseek-ai/dsh-*` peer dependencies declare `0.1.5-rc.2 || 0.1.6-alpha.1 || 0.1.6-alpha.2 || 0.1.7-rc.1 || 0.1.7-rc.2`.
 
-The DSH `0.1.6-alpha.2` audit covers the Agent, Session, Tool, Attachment, Connection, Permission Preset, Client Session, right-sidebar, and Slot interfaces used by BrowserScope. Alpha 2 retains `agent/created`, `agent/disposed`, `useSession`, `sidebarRight.openTab/close/active`, and `sidebar.right.pane.tab`. Its new multi-instance Session reference state, right-sidebar Tab Inventory, and runtime plugin unloading do not require BrowserScope business-logic changes. Host Runtime, RPC, tools, event listeners, and Client Tab/Slot registrations already follow Cordis Effect lifecycles.
+DSH `0.1.7-rc.1` removes the generic `MessageSourceMap['plugin']` source and adds an authenticated `peer` parameter to the native Connection RPC handler. RC6 introduced a dedicated `dsh-browser-scope` message source and separated the three-argument business handler of the custom `/api/browser-tools` Fetch route from DSH's four-argument native handler type; RC7 retains that implementation. Connection continues to own authentication, Host/Origin checks, request limits, and cancellation. Existing Agent, Session, Tool, Attachment, Permission Preset, Client Session, right-sidebar, and Slot APIs used by BrowserScope remain available.
 
-Comprehensive Chromium and complex-scenario results remain anchored to the live DSH `0.1.5-rc.2` baseline. RC5 additionally performs strict TypeScript checks, production Host/Client builds, npm tarball byte verification, and a fresh DSH `0.1.6-alpha.2` Profile install/start/remove lifecycle. This report does not present an API audit as a complete browser regression run.
+RC6 passes strict TypeScript, production Host/Client builds, Session Controller integration, and the complete real-Chromium 30-tool regression against DSH `0.1.7-rc.1`; its frozen tarball passes fresh Profile install/start/authentication/stop/uninstall checks. DSH `0.1.7-rc.2` retains the Tool, Session, and RPC interfaces used by BrowserScope while adding an optional localized approval display reason and a model-cache optimization for dynamic tool additions. RC6 also passes strict builds, Session Controller integration, the complete real-Chromium 30-tool regression, and fresh Profile lifecycle against RC2. RC7 changes only the version and release documentation, not the browser business source; verify its archive bytes and lifecycle separately rather than reusing RC6's candidate digest. The dynamic-tool KV Cache optimization has not received request-level validation. An isolated RC2 Web profile used the official local Mock LLM to create two formal Sessions, validating controller locking, access to all nine views, tab-close synchronization, session isolation, and Live View takeover/return state. Complex-page human input, extension downloads, visual split-view interaction, and restart recovery remain separately unverified. Compatibility is not extrapolated to future DSH versions.
 
 ## 1. 30 Browser Tools Integration
 

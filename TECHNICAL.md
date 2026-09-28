@@ -2,7 +2,7 @@
 
 [English Version](./TECHNICAL.en.md) | 简体中文
 
-当前版本 `1.0.0-rc5` 适配 DSH `0.1.5-rc.2`、`0.1.6-alpha.1` 和 `0.1.6-alpha.2`。
+版本 `1.0.0-rc7` 面向 DSH `0.1.5-rc.2`、`0.1.6-alpha.1`、`0.1.6-alpha.2`、`0.1.7-rc.1` 和 `0.1.7-rc.2`，沿用 RC6 浏览器业务实现。
 
 本文说明 BrowserScope 的配置项、浏览器状态模型和安全边界。安装和功能概览见 [README](./README.md)，测试依据见 [测试报告](./VALIDATION.md)。
 

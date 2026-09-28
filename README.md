@@ -148,16 +148,16 @@ CPU 飙高？内存泄漏？用 Trace 看主线程阻塞，用 CPU Profile 找�
 
 需要 Node.js `^22.19.0` 或 `>=24.0.0`，以及一个可以正常启动的 DSH Web Profile。
 
-安装插件：
+`1.0.0-rc7` 面向已验证的 DSH `0.1.7-rc.1` 和 `0.1.7-rc.2`，与 RC6 使用相同的浏览器业务源码。安装前请核对 npm Registry 已发布该精确版本；未发布时可使用与候选身份文件及 SHA-256 核对过的本地 tarball。候选冻结与公开发布是独立步骤，不能仅从包内版本号推断发布状态。
 
 ```powershell
-dsh plugin --profile web add dsh-browser-scope@1.0.0-rc5 --ignore-scripts --config.auto-install-peers=false
+dsh plugin --profile web add dsh-browser-scope@1.0.0-rc7 --ignore-scripts --config.auto-install-peers=false
 ```
 
 或使用本地 tarball：
 
 ```powershell
-dsh plugin --profile web add ./dsh-browser-scope-1.0.0-rc5.tgz --ignore-scripts --config.auto-install-peers=false
+dsh plugin --profile web add ./dsh-browser-scope-1.0.0-rc7.tgz --ignore-scripts --config.auto-install-peers=false
 ```
 
 在 Profile 的 `cordis.patch.yml` 中启用：
@@ -295,7 +295,7 @@ dsh plugin --profile web add ./dsh-browser-scope-1.0.0-rc5.tgz --ignore-scripts 
 
 ## 兼容范围
 
-当前版本 `1.0.0-rc5` 适配 DSH `0.1.5-rc.2`、`0.1.6-alpha.1` 和 `0.1.6-alpha.2`，要求 Cordis `>=4.0.2 <5`、Schemastery `>=3.18.2 <4`。
+版本 `1.0.0-rc7` 的目标宿主范围为 DSH `0.1.5-rc.2`、`0.1.6-alpha.1`、`0.1.6-alpha.2`、`0.1.7-rc.1` 和 `0.1.7-rc.2`，要求 Cordis `>=4.0.2 <5`、Schemastery `>=3.18.2 <4`。RC7 沿用 RC6 的浏览器业务代码；公开 npm 安装命令是否可用应以 Registry 精确版本为准，候选冻结和 GitHub 发布状态应分别核验。
 
 候选状态以外部 candidate-identity.json 和 tarball 摘要为准。
 

@@ -244,7 +244,7 @@ try {
       agent.ctx = scope.ctx
     }, { inject: ['tools', 'systemPrompt'] }))
     const unregister = ctx.agents.register(agent)
-    await Promise.resolve()
+    await unregister
     return { agent, scope, unregister }
   }
 

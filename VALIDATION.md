@@ -10,19 +10,19 @@
 
 ```text
 package: dsh-browser-scope
-version: 1.0.0-rc5
-DSH compatibility targets: 0.1.5-rc.2, 0.1.6-alpha.1, 0.1.6-alpha.2
-full browser runtime validation baseline: 0.1.5-rc.2
-0.1.6-alpha.2 validation: API audit, strict build, fresh Profile lifecycle
+version: 1.0.0-rc7
+DSH compatibility targets: 0.1.5-rc.2, 0.1.6-alpha.1, 0.1.6-alpha.2, 0.1.7-rc.1, 0.1.7-rc.2
+full browser runtime validation: 0.1.7-rc.1, 0.1.7-rc.2
+0.1.7-rc.2 validation: API/type audit, strict build, 30-tool Chromium regression, fresh Profile lifecycle
 Node.js: 22.x
 package manager: pnpm 11.x
 ```
 
-所有直接 `@deepseek-ai/dsh-*` Peer 均声明为 `0.1.5-rc.2 || 0.1.6-alpha.1 || 0.1.6-alpha.2`。
+所有直接 `@deepseek-ai/dsh-*` Peer 均声明为 `0.1.5-rc.2 || 0.1.6-alpha.1 || 0.1.6-alpha.2 || 0.1.7-rc.1 || 0.1.7-rc.2`。
 
-DSH `0.1.6-alpha.2` 适配审计覆盖 BrowserScope 使用的 Agent、Session、Tool、Attachment、Connection、Permission Preset、Client Session、右侧栏和 Slot 接口。Alpha 2 保留 `agent/created`、`agent/disposed`、`useSession`、`sidebarRight.openTab/close/active` 和 `sidebar.right.pane.tab`；新增的 Session 多实例引用状态、右侧栏 Tab Inventory 与运行时插件卸载不要求修改 BrowserScope 业务源码。Host Runtime、RPC、工具、事件监听以及 Client Tab/Slot 注册均已通过 Cordis Effect 生命周期管理。
+DSH `0.1.7-rc.1` 删除了通用 `MessageSourceMap['plugin']`，并为 Connection RPC Handler 增加已认证 `peer` 参数。RC6 已为 BrowserScope 通知声明独立的 `dsh-browser-scope` 消息来源，同时将自建 `/api/browser-tools` Fetch Route 的三参数业务 Handler 与 DSH 原生四参数 Handler 类型解耦；RC7 继承相同实现。认证、Host/Origin、请求体和取消边界保持由 Connection Carrier 提供。Agent、Session、Tool、Attachment、Permission Preset、Client Session、右侧栏和 Slot 的既有使用接口继续存在。
 
-完整 Chromium 与复杂场景结果沿用 DSH `0.1.5-rc.2` 的实机验证基线。RC5 另外执行严格 TypeScript、Host/Client 正式构建、npm tarball 字节门禁，以及全新 DSH `0.1.6-alpha.2` Profile 的安装、启动和卸载生命周期验证。本报告不会把 API 审计描述为完整浏览器功能回归。
+RC6 在 DSH `0.1.7-rc.1` 依赖面完成严格 TypeScript、Host/Client 正式构建、Session Controller 集成和真实 Chromium 30 工具完整回归；全新 Profile 另完成冻结 RC6 tarball 安装、Web 启动、BrowserAuth HTTP `401`、精确停止、卸载和 manifest 无残留。DSH `0.1.7-rc.2` 延续相同工具/Session/RPC 使用接口，额外提供可选本地化审批显示理由和动态增加工具的模型缓存能力；RC6 在 RC2 依赖面也通过严格构建、Session Controller 集成、真实 Chromium 30 工具回归和全新 Profile 生命周期。RC7 仅调整版本与发布文档，不修改浏览器业务源码；其包字节和生命周期应另行核验，不能将 RC6 的候选摘要当作 RC7 摘要。动态工具的 KV Cache 优化尚未做模型请求级验收。RC2 隔离 Web 使用官方本机 Mock LLM 形成两个正式 Session，已验证 Controller 锁定、九视图可达性、Tab 关闭同步、Session 隔离和 Live View 接管/归还状态；复杂网页人工输入、扩展下载、双页可视交互及重启恢复仍未单独验收。本报告不将旧基线自动外推到未来 DSH 版本。
 
 本报告不自动承诺后续 DSH RC、正式版、其他操作系统或所有第三方浏览器插件兼容。
 

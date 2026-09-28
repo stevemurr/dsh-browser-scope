@@ -1,6 +1,5 @@
 import {
   clientRequestSchema,
-  type ConnectionRpcHandler,
   type HostConnectionHandle,
 } from '@deepseek-ai/dsh-client-connection'
 
@@ -8,6 +7,24 @@ interface BrowserRpcPayload {
   readonly endpoint: string
   readonly payload: unknown
 }
+
+type BrowserRpcResult = {
+  readonly ok: true
+  readonly value: unknown
+} | {
+  readonly ok: false
+  readonly error: {
+    readonly code: string
+    readonly message: string
+    readonly details: object
+  }
+}
+
+type BrowserRpcHandler = (
+  endpoint: string,
+  payload: unknown,
+  signal: AbortSignal,
+) => Promise<BrowserRpcResult>
 
 function isBrowserRpcPayload(value: unknown): value is BrowserRpcPayload {
   return typeof value === 'object'
@@ -29,7 +46,7 @@ export function registerAuthenticatedRpc(
   connection: HostConnectionHandle,
   path: string,
   method: string,
-  handler: ConnectionRpcHandler,
+  handler: BrowserRpcHandler,
 ): () => Promise<void> {
   // DSH 0.1.5-rc.1 的自定义 rpc.handle() 会在 Connection 服务的 owner 上访问
   // webServer，第三方插件无法通过自身注入声明满足该内部访问。这里改用公开的精确

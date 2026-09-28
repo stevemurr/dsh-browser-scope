@@ -1,8 +1,55 @@
-# DSH BrowserScope 1.0.0-rc5 — DSH 0.1.6-alpha.2 Compatibility Release
+# DSH BrowserScope 1.0.0-rc7 — 发布说明修订候选
+
+`1.0.0-rc7` 沿用 RC6 已通过 DSH `0.1.7-rc.1` 和 `0.1.7-rc.2` 验收的浏览器业务实现，仅更新版本和发布说明。中英文 README 的 npm 安装命令指向 RC7 精确版本，并明确要求发布前核对 Registry，避免包发布后仍将 RC5 描述为当前公开版本。RC6 已冻结但不公开发布；RC5 历史身份不变。
+
+RC7 的冻结身份由独立候选文件与 tarball 摘要确定；npm、Git Tag、GitHub Release 和公开 CI 各自以远端记录为准，不能仅从本说明推断已完成。RC6 原有深度交互未专项验收的边界依然适用。
+
+---
+
+# 历史：DSH BrowserScope 1.0.0-rc6 — DSH 0.1.7-rc.1 / rc.2 Compatibility Candidate
+
+## RC6 历史状态
+
+`1.0.0-rc6` 是 DSH `0.1.7-rc.1` 与 `0.1.7-rc.2` 兼容候选。候选身份应以外部不可变 tarball、SHA-256 和 `candidate-identity.json` 核验；npm、Git Tag、GitHub Release 均需独立核验，不能从本文件或包版本推断已经公开发布。RC5 的冻结资产和发布身份保持不可变。
+
+RC6 将直接 DSH Peer 范围扩展为 `0.1.5-rc.2 || 0.1.6-alpha.1 || 0.1.6-alpha.2 || 0.1.7-rc.1 || 0.1.7-rc.2`，当前开发依赖精确固定为 DSH `0.1.7-rc.2`、Cordis `4.0.4` 和 Schemastery `3.18.4`。
+
+## DSH 0.1.7-rc.1 适配
+
+- DSH 不再提供通用 `MessageSourceMap['plugin']`。BrowserScope 现在声明独立的 `dsh-browser-scope` 消息来源，并集中构造 Session 通知。
+- Connection 原生 RPC Handler 新增认证后的 `peer` 参数。BrowserScope 的 `/api/browser-tools` 精确 Fetch Route 继续使用 Connection 已认证 Carrier，但内部三参数业务 Handler 改为项目自有类型，不再错误复用原生 Handler 类型。
+- RC1 的 Agent Registry 注册与注销是可等待的 Cordis 生命周期。集成测试现在等待 `agent/created` 初始化和 disposer 收敛后再断言 Session 资源释放。
+- 30 个工具、Session Controller、九视图协议、浏览器 Runtime、权限策略和数据格式没有扩大或删减。
+
+## 已完成验证
+
+- 冻结锁文件安装与 `pnpm peers check`。
+- 严格 TypeScript、Host ESM 和 Client Bundle 构建。
+- 13 个纯逻辑/安全/诊断专项测试。
+- RC1 真实 Agent Scope Session Controller 集成：工具面 `0 → 30`、选择锁定、同名遮蔽、第三方限制和资源释放通过。
+- RC1 真实 Chromium 30 工具完整回归：Persistent Context、扩展、分屏、Debugger、Diagnose、Network、Profile、External CDP、取消和清理通过。
+- 全新 RC1 Web Profile：临时 RC6 tarball 安装、插件清单、BrowserAuth HTTP `401`、精确停止、卸载、manifest 无残留。
+- npm 25 文件真实 tarball 字节门禁已验证；冻结阶段只封存已验证归档，不重新构建或打包。
+
+## DSH 0.1.7-rc.2 补充审计
+
+- RC2 保留 BrowserScope 使用的 Agent、Tool 注册/限制/守卫、Connection RPC、Client Session 与右侧栏基础接口；原生审批决策新增可选本地化 `displayReason`，不改变现有 `reason` 语义。
+- 官方动态增加工具的 KV Cache 优化未在本轮做模型请求级性能实测；Session Controller 的工具面 `0 → 30`、选择锁定、同名遮蔽、第三方限制和释放资源均在 RC2 真实 Agent Scope 下通过。
+- RC2 严格构建、真实 Chromium 30 工具完整回归、npm 25 文件门禁和全新 Web Profile 生命周期通过；隔离端口 `31968` 未认证返回 HTTP `401`，停止、卸载后无 manifest 依赖残留。
+- DSH RC2 隔离 Web 使用官方本机 Mock LLM 形成两个正式 Session；BrowserScope 选择锁定、九视图逐一切换、Tab 关闭同步、Session 隔离、Live View 接管/归还状态通过。未使用真实用户凭据，也未验证复杂网页人工输入或动态工具 KV Cache 的模型请求级性能。
+
+## 尚未完成
+
+- RC6 已独立冻结，未公开发布；公开仓库 CI、npm、Git Tag 与 GitHub Release 均未用于 RC6，不能从本说明自动推断任何版本已经发布。
+- DSH Web 九视图可达性、Tab 关闭同步和接管状态已在隔离 RC2 页面验证；仍待复杂网页人工输入、扩展安装、双页可视交互、Session 重启恢复和动态工具 KV Cache 专项验收。现有 3080 生产 Profile 未修改或启动。
+
+---
+
+# 历史：DSH BrowserScope 1.0.0-rc5 — DSH 0.1.6-alpha.2 Compatibility Release
 
 ## 发布定位
 
-`1.0.0-rc5` 是当前唯一发布候选。npm、Git Tag、GitHub Release、README、tarball、SHA-256 和候选身份文件全部绑定到这一版本。RC4 及更早版本只作为历史版本保留，不再用于当前安装命令或发布资产。
+`1.0.0-rc5` 是当时的公开发布候选。其 npm、Git Tag、GitHub Release、README、tarball、SHA-256 和候选身份文件均绑定到这一版本。RC4 及更早版本作为历史版本保留。
 
 本版本支持 DSH `0.1.5-rc.2`、`0.1.6-alpha.1` 和 `0.1.6-alpha.2`。所有直接 `@deepseek-ai/dsh-*` Peer 均声明为 `0.1.5-rc.2 || 0.1.6-alpha.1 || 0.1.6-alpha.2`。Cordis 兼容范围保持 `>=4.0.2 <5`，Schemastery 保持 `>=3.18.2 <4`。
 
