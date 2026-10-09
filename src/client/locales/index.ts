@@ -34,9 +34,9 @@ export function t(key: string): string {
   const dict = locales[activeLocale]
   if (dict && key in dict) {
     const value = dict[key] as string
-    // If the value looks like a placeholder key (e.g., browser.scope.xxx),
+    // If the value looks like a placeholder (starts with [ or contains : or is a key reference),
     // fall back to Chinese text from zh.json until proper translations are added
-    if (activeLocale === 'en' && value.startsWith('browser.scope.')) {
+    if (activeLocale === 'en' && (value.startsWith('browser.scope.') || value.startsWith('[') || value.includes(':'))) {
       if ('zh' in locales && key in locales.zh) {
         return locales.zh[key] as string
       }
