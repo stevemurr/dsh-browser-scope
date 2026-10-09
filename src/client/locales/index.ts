@@ -28,12 +28,20 @@ export function setLocale(locale: string): void {
 
 /**
  * Translate a locale key to the active language.
- * Falls back to the English placeholder if the key is missing.
+ * Falls back to Chinese (original) when the English value is itself a placeholder key.
  */
 export function t(key: string): string {
   const dict = locales[activeLocale]
   if (dict && key in dict) {
-    return dict[key] as string
+    const value = dict[key] as string
+    // If the value looks like a placeholder key (e.g., browser.scope.xxx),
+    // fall back to Chinese text from zh.json until proper translations are added
+    if (activeLocale === 'en' && value.startsWith('browser.scope.')) {
+      if ('zh' in locales && key in locales.zh) {
+        return locales.zh[key] as string
+      }
+    }
+    return value
   }
   // Fallback: if active is zh and key not found, try en
   if (activeLocale !== 'en' && 'en' in locales && key in locales.en) {
